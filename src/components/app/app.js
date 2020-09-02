@@ -12,8 +12,11 @@ class App extends React.Component {
       username: 'anonymous',
     }
     this.chatProxy = new ChatProxy();
+  }
+
+  componentDidMount() {
     this.chatProxy.onChangeUsername(username => this.setState({username}));
-    this.chatProxy.onConnected(() => this.setState({status: 'connected'}))
+    this.chatProxy.onConnected(() => this.setState({status: 'connected'}));
   }
 
   // Connect the client to another client with its id
@@ -34,7 +37,7 @@ class App extends React.Component {
       <Container fluid className="app">
         <Row className="h-100">
           <Col className="chat-col">
-            <Chat/>
+            <Chat chatProxy={this.chatProxy}/>
           </Col>
           <Col md="3" className="sidebar-col">
             <SideBar status={this.state.status} 

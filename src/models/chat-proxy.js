@@ -48,7 +48,10 @@ class ChatProxy {
   setConnection(conn) {
     console.log('Connected to', conn);
     this.conn = conn;
-    this.conn.on('data', data => this.dataReceivedCb(data));
+    this.conn.on('data', data => {
+      console.log('Data received:', data)
+      this.dataReceivedCb(data)
+    });
     this.connectedCb(conn);
   }
 
@@ -61,6 +64,7 @@ class ChatProxy {
   }
 
   send(data) {
+    console.log('Sending data:', data);
     this.conn.send(data);
   }
 }
