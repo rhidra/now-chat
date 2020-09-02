@@ -2,3 +2,15 @@ body {
   background-color: $darker;
   color: white;
 }
+
+.app {
+  height: calc(100vh - 56px);
+}
+
+.chat-col {
+  background-color: $darker;
+}
+
+.sidebar-col {
+  background-color: $dark;
+}

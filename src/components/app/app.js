@@ -11,11 +11,11 @@ function App() {
     </Navbar>
 
     <Container fluid className="app">
-      <Row>
-        <Col>
+      <Row className="h-100">
+        <Col className="chat-col">
           <Chat/>
         </Col>
-        <Col md="3">
+        <Col md="3" className="sidebar-col">
           <SideBar/>
         </Col>
       </Row>
