@@ -8,7 +8,7 @@ function MessageForm() {
       <FormControl as="textarea" rows="3"/>
       <InputGroup.Append>
 
-      <Button variant="primary" type="submit">
+      <Button variant="primary">
         Send <Icon.CheckCircleFill/>
       </Button>
 
