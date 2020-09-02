@@ -1,3 +1,8 @@
+@import '~bootstrap/scss/bootstrap';
+
+@import 'theme/main';
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -11,3 +16,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@import 'components/app/app';
+@import 'components/chat/chat';
+@import 'components/side-bar/side-bar';
+@import 'components/message-form/message-form';
