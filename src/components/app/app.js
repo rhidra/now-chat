@@ -4,6 +4,7 @@ import SideBar from '../side-bar';
 import {Container, Row, Col, Navbar} from 'react-bootstrap';
 import ChatProxy from '../../models/chat-proxy';
 import MessageFormat from '../../models/message-format';
+import UsersList from '../users-list';
 
 
 class App extends React.Component {
@@ -42,7 +43,8 @@ class App extends React.Component {
 
   // Connect the client to another client with its id
   handleConnect(id) {
-    this.setState({status: 'loading'})
+    console.log('Trying to connect to', id);
+    this.setState({status: 'loading'});
     this.chatProxy.connect(id)
       .then(() => this.setState({status: 'connected'}))
       .catch(() => this.setState({status: 'error'}));
@@ -74,11 +76,11 @@ class App extends React.Component {
           </Col>
 
           <Col md="3" className="sidebar-col">
-            <SideBar status={this.state.status} 
-                     username={this.chatProxy ? this.chatProxy.username : ''}
-                     targetId={this.chatProxy ? this.chatProxy.peerId : ''}
-                     onConnect={id => this.handleConnect(id)}
-                     onDisconnect={id => this.handleDisconnect(id)}/>
+            <UsersList status={this.state.status} 
+                       username={this.chatProxy ? this.chatProxy.username : ''}
+                       targetId={this.chatProxy ? this.chatProxy.peerId : ''}
+                       onConnect={id => this.handleConnect(id)}
+                       onDisconnect={() => this.handleDisconnect()}/>
           </Col>
         </Row>
       </Container>

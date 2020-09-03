@@ -8,7 +8,7 @@ class ChatProxy {
   constructor() {
     const id = Math.floor(Math.random()*10000);
     this.peer = new Peer(id, {
-      host: 'localhost',
+      host: process.env.HOST || 'localhost',
       port: 9000,
       path: '/chat',
     });
