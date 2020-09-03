@@ -6,6 +6,7 @@ function ChatView(props) {
       {props.history.map((msg, i) =>
         <li key={msg.id}>
           <strong>{msg.from}: </strong>
+          
           {msg.data.split('\n').map((text, j) => <Fragment key={j}>{text}<br/></Fragment>)}
         </li>
       )}
