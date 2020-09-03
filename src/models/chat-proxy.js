@@ -10,6 +10,7 @@ class ChatProxy {
     this.changeUsernameCb = () => {};
     this.connectedCb = () => {};
     this.errorCb = () => {};
+    this.disconnectedCb = () => {};
 
     // Connected to the PeerJS server
     this.peer.on('open', id => this.setUsername(id));
@@ -21,6 +22,8 @@ class ChatProxy {
       console.error('Error PeerJS :', err);
       this.errorCb(err);
     });
+    this.peer.on('disconnected', () => this.disconnect());
+    this.peer.on('close', () => this.disconnect());
   }
 
   connect(otherId) {
@@ -53,11 +56,31 @@ class ChatProxy {
       console.log('Data received:', data)
       this.dataReceivedCb(data)
     });
+    this.conn.on('error', err => {
+      console.error('PeerJS Connection Error:', err);
+      this.errorCb(err);
+    });
+    this.conn.on('close', () => this.disconnect());
     this.connectedCb(conn);
+  }
+
+  disconnect() {
+    if (this.conn && this.conn.open) {
+      this.conn.close();
+    }
+    if (!this.peer.disconnected) {
+      this.peer.disconnect();
+    }
+
+    this.disconnectedCb();
   }
 
   onConnected(fun) {
     this.connectedCb = fun;
+  }
+
+  onDisconnected(fun) {
+    this.disconnectedCb = fun;
   }
 
   onDataReceived(fun) {

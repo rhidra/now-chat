@@ -8,7 +8,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'pending',
+      status: 'disconnected',
       username: 'anonymous',
       history: [],
     }
@@ -18,6 +18,7 @@ class App extends React.Component {
   componentDidMount() {
     this.chatProxy.onChangeUsername(username => this.setState({username}));
     this.chatProxy.onConnected(() => this.setState({status: 'connected'}));
+    this.chatProxy.onDisconnected(() => this.setState({status: 'disconnected'}));
     this.chatProxy.onDataReceived(data => {
       this.setState({history: this.state.history.concat([data])})
       this.updateScroll();

@@ -23,7 +23,7 @@ function SideBar({status, onConnect, username}) {
         <FormControl value={id} onChange={e => setId(e.target.value)} type="text" disabled={status === 'connected'}/>
       </FormGroup>
 
-      {(status === 'pending' || status === 'error') && <Button type="submit">Connect to the target</Button>}
+      {(status === 'disconnected' || status === 'error') && <Button type="submit">Connect to the target</Button>}
       {status === 'loading' && <Button type="submit" disabled>Connecting ...</Button>}
       {status === 'connected' && <Button type="submit" disabled variant="success">Connected</Button>}
     </Form>
