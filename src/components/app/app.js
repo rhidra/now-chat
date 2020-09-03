@@ -3,6 +3,8 @@ import Chat from '../chat';
 import SideBar from '../side-bar';
 import {Container, Row, Col, Navbar} from 'react-bootstrap';
 import ChatProxy from '../../models/chat-proxy';
+import MessageFormat from '../../models/message-format';
+
 
 class App extends React.Component {
   constructor(props) {
@@ -13,12 +15,23 @@ class App extends React.Component {
       history: [],
     }
     this.chatProxy = new ChatProxy();
+    this.msgFormat = new MessageFormat(this.chatProxy);
   }
 
   componentDidMount() {
     this.chatProxy.onChangeUsername(username => this.setState({username}));
-    this.chatProxy.onConnected(() => this.setState({status: 'connected'}));
-    this.chatProxy.onDisconnected(() => this.setState({status: 'disconnected'}));
+    this.chatProxy.onConnected(() => 
+      this.setState({
+        status: 'connected',
+        history: this.state.history.concat([this.msgFormat.connection()]),
+      })
+    );
+    this.chatProxy.onDisconnected(() => 
+      this.setState({
+        status: 'disconnected', 
+        history: this.state.history.concat([this.msgFormat.disconnection()]),
+      })
+    );
     this.chatProxy.onDataReceived(data => {
       this.setState({history: this.state.history.concat([data])})
       this.updateScroll();
@@ -39,7 +52,7 @@ class App extends React.Component {
   }
 
   handleSendData(data) {
-    data = this.chatProxy.preprocessData(data);
+    data = this.msgFormat.formatMessage(data);
     this.chatProxy.send(data);
     this.setState({history: this.state.history.concat([data])});
     this.updateScroll();
@@ -61,7 +74,7 @@ class App extends React.Component {
           <Col md="3" className="sidebar-col">
             <SideBar status={this.state.status} 
                      username={this.chatProxy.username}
-                     targetId={this.chatProxy.targetId}
+                     targetId={this.chatProxy.peerId}
                      onConnect={id => this.handleConnect(id)}
                      onDisconnect={id => this.handleDisconnect(id)}/>
           </Col>

@@ -12,4 +12,12 @@
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+
+  li.connection {
+    color: green;
+  }
+
+  li.disconnection {
+    color: red;
+  }
 }
