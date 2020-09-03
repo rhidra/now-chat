@@ -1,5 +1,15 @@
 .chat-view {
   height: 70vh;
   max-width: 100%;
-  overflow: scroll;
+
+  // Handle long words and long sentences
+  overflow-y: scroll;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+
+  // Add hyphens when breaking a word
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
