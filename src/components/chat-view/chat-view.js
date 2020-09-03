@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 function ChatView(props) {
   return (
-    <ul className="chat-view">
+    <ul className="chat-view" id="chat-view">
       {props.history.map((msg, i) =>
         <li key={msg.id}>
           <strong>{msg.from}: </strong>

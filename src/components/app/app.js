@@ -18,7 +18,10 @@ class App extends React.Component {
   componentDidMount() {
     this.chatProxy.onChangeUsername(username => this.setState({username}));
     this.chatProxy.onConnected(() => this.setState({status: 'connected'}));
-    this.chatProxy.onDataReceived(data => this.setState({history: this.state.history.concat([data])}))
+    this.chatProxy.onDataReceived(data => {
+      this.setState({history: this.state.history.concat([data])})
+      this.updateScroll();
+    });
   }
 
   // Connect the client to another client with its id
@@ -33,6 +36,7 @@ class App extends React.Component {
     data = this.chatProxy.preprocessData(data);
     this.chatProxy.send(data);
     this.setState({history: this.state.history.concat([data])});
+    this.updateScroll();
   }
 
   render(){
@@ -57,6 +61,13 @@ class App extends React.Component {
       </Container>
       </>
     );
+  }
+
+  updateScroll() {
+    setTimeout(() => {
+      const element = document.getElementById('chat-view');
+      element.scrollTop = element.scrollHeight;
+    }, 100);
   }
 }
 
