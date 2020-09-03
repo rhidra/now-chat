@@ -14,11 +14,13 @@ class App extends React.Component {
       username: 'anonymous',
       history: [],
     }
-    this.chatProxy = new ChatProxy();
-    this.msgFormat = new MessageFormat(this.chatProxy);
+    this.chatProxy = null;
+    this.msgFormat = null;
   }
 
   componentDidMount() {
+    this.chatProxy = new ChatProxy();
+    this.msgFormat = new MessageFormat(this.chatProxy);
     this.chatProxy.onChangeUsername(username => this.setState({username}));
     this.chatProxy.onConnected(() => 
       this.setState({
@@ -73,8 +75,8 @@ class App extends React.Component {
 
           <Col md="3" className="sidebar-col">
             <SideBar status={this.state.status} 
-                     username={this.chatProxy.username}
-                     targetId={this.chatProxy.peerId}
+                     username={this.chatProxy ? this.chatProxy.username : ''}
+                     targetId={this.chatProxy ? this.chatProxy.peerId : ''}
                      onConnect={id => this.handleConnect(id)}
                      onDisconnect={id => this.handleDisconnect(id)}/>
           </Col>

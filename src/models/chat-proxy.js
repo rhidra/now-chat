@@ -1,9 +1,19 @@
 import Peer from 'peerjs';
+import io from 'socket.io';
+
+const USER_CONNECTED = 'user-connected';
+const USER_DISCONNECTED = 'user-disconnected';
 
 class ChatProxy {
   constructor() {
-    this.peer = new Peer();
+    const id = Math.floor(Math.random()*10000);
+    this.peer = new Peer(id, {
+      host: 'localhost',
+      port: 9000,
+      path: '/chat',
+    });
     this.username = 'anonymous';
+    this.users = [];
     this.conn = null;
     this.dataReceivedCb = () => {};
     this.changeUsernameCb = () => {};
