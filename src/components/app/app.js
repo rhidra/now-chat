@@ -33,6 +33,11 @@ class App extends React.Component {
       .catch(() => this.setState({status: 'error'}));
   }
 
+  handleDisconnect() {
+    this.setState({status: 'loading'});
+    this.chatProxy.disconnect();
+  }
+
   handleSendData(data) {
     data = this.chatProxy.preprocessData(data);
     this.chatProxy.send(data);
@@ -56,7 +61,9 @@ class App extends React.Component {
           <Col md="3" className="sidebar-col">
             <SideBar status={this.state.status} 
                      username={this.chatProxy.username}
-                     onConnect={id => this.handleConnect(id)}/>
+                     targetId={this.chatProxy.targetId}
+                     onConnect={id => this.handleConnect(id)}
+                     onDisconnect={id => this.handleDisconnect(id)}/>
           </Col>
         </Row>
       </Container>

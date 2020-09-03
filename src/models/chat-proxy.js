@@ -61,15 +61,13 @@ class ChatProxy {
       this.errorCb(err);
     });
     this.conn.on('close', () => this.disconnect());
-    this.connectedCb(conn);
+
+    setTimeout(() => this.connectedCb(conn), 100);
   }
 
   disconnect() {
     if (this.conn && this.conn.open) {
       this.conn.close();
-    }
-    if (!this.peer.disconnected) {
-      this.peer.disconnect();
     }
 
     this.disconnectedCb();
@@ -99,6 +97,10 @@ class ChatProxy {
       to: this.conn.peer,
       data: msg,
     };
+  }
+
+  get targetId() {
+    return this.conn ? (this.conn.open ? this.conn.peer : null) : null;
   }
 }
 
