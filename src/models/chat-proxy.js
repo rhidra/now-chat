@@ -12,18 +12,14 @@ class ChatProxy {
     this.errorCb = () => {};
     this.disconnectedCb = () => {};
 
-    // Connected to the PeerJS server
     this.peer.on('open', id => this.setUsername(id));
-
-    // A new connection is received
     this.peer.on('connection', conn => this.setConnection(conn));
-
+    this.peer.on('disconnected', () => this.disconnect());
+    this.peer.on('close', () => this.disconnect());
     this.peer.on('error', err => {
       console.error('Error PeerJS :', err);
       this.errorCb(err);
     });
-    this.peer.on('disconnected', () => this.disconnect());
-    this.peer.on('close', () => this.disconnect());
   }
 
   connect(otherId) {
