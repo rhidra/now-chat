@@ -31,7 +31,8 @@ class MessageForm extends React.Component {
     return (
       <Form onSubmit={this.handleSubmit}>
         <InputGroup>
-          <FormControl as="textarea" rows="3" value={this.state.value} onChange={this.handleChange} onKeyDown={this.handleKeyDown}/>
+          <FormControl as="textarea" rows="1" value={this.state.value} onChange={this.handleChange} onKeyDown={this.handleKeyDown} 
+                      disabled={this.props.status !== 'connected'}/>
 
           <InputGroup.Append>
             <Button variant={this.props.status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={this.props.status !== 'connected'}>

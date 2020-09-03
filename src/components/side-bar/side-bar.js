@@ -11,7 +11,8 @@ function SideBar({status, onConnect, username}) {
   return (
     <Form onSubmit={handleSubmit}>
       {status === 'error' && <Alert variant="danger">Error ! Are you sure this ID exists ?</Alert>}
-      {status === 'connected' && <Alert variant="success">You are connected to another user ! Let's chat !</Alert>}
+      {status === 'connected' && <Alert variant="success">You are connected to another user !</Alert>}
+      {status === 'disconnected' && <Alert variant="info">You are disconnected. Enter another user ID to start chatting.</Alert>}
 
       <FormGroup>
         <FormLabel>Your ID</FormLabel>
