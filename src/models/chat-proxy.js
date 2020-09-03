@@ -1,4 +1,5 @@
 import Peer from 'peerjs';
+import {v4 as uuidv4} from 'uuid';
 
 class ChatProxy {
   constructor() {
@@ -66,6 +67,15 @@ class ChatProxy {
   send(data) {
     console.log('Sending data:', data);
     this.conn.send(data);
+  }
+
+  preprocessData(msg) {
+    return {
+      id: uuidv4(),
+      from: this.username,
+      to: this.conn.peer,
+      data: msg,
+    };
   }
 }
 

@@ -17,6 +17,7 @@ class MessageForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     this.props.onSubmit(this.state.value);
+    this.setState({value: ''});
   }
 
   render() {
@@ -26,7 +27,7 @@ class MessageForm extends React.Component {
           <FormControl as="textarea" rows="3" value={this.state.value} onChange={this.handleChange}/>
 
           <InputGroup.Append>
-            <Button variant="primary" type="submit">
+            <Button variant={this.props.status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={this.props.status !== 'connected'}>
               Send <Icon.CheckCircleFill/>
             </Button>
           </InputGroup.Append>

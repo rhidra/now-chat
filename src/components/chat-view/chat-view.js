@@ -1,18 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
-function ChatView() {
+function ChatView(props) {
   return (
-    <div className="chat-view">
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    Hello<br/>
-    </div>
+    <ul className="chat-view">
+      {props.history.map((msg, i) =>
+        <li key={msg.id}>
+          <strong>{msg.from}: </strong>
+          {msg.data}
+        </li>
+      )}
+    </ul>
   );
 }
   

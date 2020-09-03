@@ -10,6 +10,7 @@ class App extends React.Component {
     this.state = {
       status: 'pending',
       username: 'anonymous',
+      history: [],
     }
     this.chatProxy = new ChatProxy();
   }
@@ -17,6 +18,7 @@ class App extends React.Component {
   componentDidMount() {
     this.chatProxy.onChangeUsername(username => this.setState({username}));
     this.chatProxy.onConnected(() => this.setState({status: 'connected'}));
+    this.chatProxy.onDataReceived(data => this.setState({history: this.state.history.concat([data])}))
   }
 
   // Connect the client to another client with its id
@@ -25,6 +27,12 @@ class App extends React.Component {
     this.chatProxy.connect(id)
       .then(() => this.setState({status: 'connected'}))
       .catch(() => this.setState({status: 'error'}));
+  }
+
+  handleSendData(data) {
+    data = this.chatProxy.preprocessData(data);
+    this.chatProxy.send(data);
+    this.setState({history: this.state.history.concat([data])});
   }
 
   render(){
@@ -36,9 +44,10 @@ class App extends React.Component {
 
       <Container fluid className="app">
         <Row className="h-100">
-          <Col className="chat-col">
-            <Chat chatProxy={this.chatProxy}/>
+          <Col md="9" className="chat-col">
+            <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)}/>
           </Col>
+
           <Col md="3" className="sidebar-col">
             <SideBar status={this.state.status} 
                      username={this.chatProxy.username}
