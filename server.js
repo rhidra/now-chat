@@ -36,7 +36,6 @@ app.get('/users', (req, res) => {
 });
 
 app.post('/username', (req, res) => {
-  console.log(req.body);
   const user = users.find(u => u.peerId === req.body.peerId);
   if (!user) {
     res.status(400);

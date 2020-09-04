@@ -15,11 +15,12 @@ class App extends React.Component {
       status: 'disconnected',
       username: 'anonymous',
       history: [],
+      users: [],
     }
+    this.api = new ApiProxy();
   }
 
   componentDidMount() {
-    this.api = new ApiProxy();
     this.chatProxy = new ChatProxy();
     this.msgFormat = new MessageFormat(this.chatProxy);
     this.chatProxy.onChangeUsername(username => this.setState({username}));
@@ -42,10 +43,10 @@ class App extends React.Component {
   }
 
   // Connect the client to another client with its id
-  handleConnect(id) {
-    console.log('Trying to connect to', id);
+  handleConnect(user) {
+    console.log('Trying to connect to', user.username, user.peerId);
     this.setState({status: 'loading'});
-    this.chatProxy.connect(id)
+    this.chatProxy.connect(user.peerId)
       .then(() => this.setState({status: 'connected'}))
       .catch(() => this.setState({status: 'error'}));
   }
@@ -66,6 +67,12 @@ class App extends React.Component {
     this.api.updateUsername(username, this.chatProxy.username);
   }
 
+  async updateUsers() {
+    const users = await this.api.getUsers();
+    this.setState({users});
+    return users;
+  }
+
   render(){
     return (
       <>
@@ -76,7 +83,7 @@ class App extends React.Component {
       <Container fluid className="app">
         <Row className="h-100">
           <Col md="9" className="chat-col">
-            <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)}/>
+            <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)} users={this.state.users}/>
           </Col>
 
           <Col md="3" className="sidebar-col">
@@ -85,8 +92,11 @@ class App extends React.Component {
             <UsersList status={this.state.status} 
                        username={this.chatProxy ? this.chatProxy.username : ''}
                        targetId={this.chatProxy ? this.chatProxy.peerId : ''}
-                       onConnect={id => this.handleConnect(id)}
-                       onDisconnect={() => this.handleDisconnect()}/>
+                       users={this.state.users}
+                       updateUsers={() => this.updateUsers()}
+                       onConnect={user => this.handleConnect(user)}
+                       onDisconnect={() => this.handleDisconnect()}
+                       />
           </Col>
         </Row>
       </Container>

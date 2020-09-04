@@ -1,18 +1,15 @@
 import React, {Fragment} from 'react';
 import { FormGroup, FormControl, FormLabel, Button, Alert, Spinner } from 'react-bootstrap';
-import ApiProxy from '../../models/api-proxy';
 
 class UsersList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      users: [],
       isLoading: false,
     };
   }
 
   componentDidMount() {
-    this.api = new ApiProxy();
     this.timerRefreshUsers = setInterval(() => this.refreshUsersList(), 5000);
     this.refreshUsersList();
   }
@@ -21,10 +18,10 @@ class UsersList extends React.Component {
     clearInterval(this.timerRefreshUsers);
   }
 
-  refreshUsersList() {
+  async refreshUsersList() {
     this.setState({isLoading: true});
-    this.api.getUsers()
-      .then(data => this.setState({users: data, isLoading: false}));
+    await this.props.updateUsers();
+    this.setState({isLoading: false});
   }
 
   render() {
@@ -45,9 +42,9 @@ class UsersList extends React.Component {
 
         <h2>Users connected:</h2>
         <ul>
-          {this.state.users.length === 0 && 'No user currently online'}
+          {this.props.users.length === 0 && 'No user currently online'}
 
-          {this.state.users.map((user, key) => {
+          {this.props.users.map((user, key) => {
             if (user.peerId === this.props.username) { return <Fragment key={user.peerId}></Fragment>; } 
             return (
               <li key={user.peerId} className={(user.peerId === this.props.targetId ? 'selected ' : '') + 'user'} onClick={() => this.props.onConnect(user)}>
