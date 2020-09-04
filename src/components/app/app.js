@@ -20,6 +20,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    console.log('Environnement variable :', process.env);
     this.chatProxy = new ChatProxy();
     this.msgFormat = new MessageFormat(this.chatProxy);
     this.chatProxy.onChangeUsername(username => this.setState({username}));
