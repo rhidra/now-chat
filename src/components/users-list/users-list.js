@@ -10,7 +10,7 @@ class UsersList extends React.Component {
   }
 
   refreshUsersList() {
-    fetch(process.env.NODE_ENV === 'production' ? 'https://now-chat-1.herokuapp.com:3001/users' : 'http://localhost:3001/users')
+    fetch(process.env.NODE_ENV === 'production' ? 'https://now-chat-1.herokuapp.com/users' : 'http://localhost:3001/users')
       .then(data => data.json())
       .then(data => this.setState({users: data}));
   }
