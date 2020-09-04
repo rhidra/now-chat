@@ -1,21 +1,23 @@
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
-const PeerServer = require('peer').PeerServer;
+const PeerServer = require('peer').ExpressPeerServer;
 
 const USER_CONNECTED = 'user-connected';
 const USER_DISCONNECTED = 'user-disconnected';
-const app = express();
-const port = process.env.PORT || 3001;
 
+const port = process.env.PORT || 3001;
+const app = express();
 app.use(cors());
 app.use(express.static(__dirname + '/build'));
 
+const server = app.listen(port);
 console.log('Listening on port', port);
 
+const peerServer = new PeerServer(server);
+app.use('/peerjs', peerServer);
+
 const users = [];
-
-const peerServer = new PeerServer({ port: 9000, path: '/chat' });
-
 peerServer.on('connection', (id) => {
   console.log('User connected with #', id.id);
   users.push(id.id);
@@ -33,4 +35,3 @@ app.get('/users', (req, res) => {
   return res.json(users);
 });
 
-app.listen(port);
