@@ -1,8 +1,4 @@
 import Peer from 'peerjs';
-import io from 'socket.io';
-
-const USER_CONNECTED = 'user-connected';
-const USER_DISCONNECTED = 'user-disconnected';
 
 class ChatProxy {
   constructor() {

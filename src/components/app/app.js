@@ -1,6 +1,5 @@
 import React from 'react';
 import Chat from '../chat';
-import SideBar from '../side-bar';
 import {Container, Row, Col, Navbar} from 'react-bootstrap';
 import ChatProxy from '../../models/chat-proxy';
 import MessageFormat from '../../models/message-format';
@@ -20,7 +19,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Environnement variable :', process.env);
     this.chatProxy = new ChatProxy();
     this.msgFormat = new MessageFormat(this.chatProxy);
     this.chatProxy.onChangeUsername(username => this.setState({username}));
