@@ -20,7 +20,7 @@ class UsersList extends React.Component {
       <div onSubmit={this.props.handleSubmit}>
         {this.props.status === 'error' && <Alert variant="danger">Error ! Are you sure this ID exists ?</Alert>}
         {this.props.status === 'connected' && <Alert variant="success">You are connected to another user !</Alert>}
-        {this.props.status === 'disconnected' && <Alert variant="info">You are disconnected. Enter another user ID to start chatting.</Alert>}
+        {this.props.status === 'disconnected' && <Alert variant="info">You are disconnected. Select another user and start chatting !</Alert>}
 
         <FormGroup>
           <FormLabel>Your ID</FormLabel>
