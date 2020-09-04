@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import { FormGroup, FormControl, FormLabel, Button, Alert, Spinner } from 'react-bootstrap';
+import ApiProxy from '../../models/api-proxy';
 
 class UsersList extends React.Component {
   constructor(props) {
@@ -11,6 +12,7 @@ class UsersList extends React.Component {
   }
 
   componentDidMount() {
+    this.api = new ApiProxy();
     this.timerRefreshUsers = setInterval(() => this.refreshUsersList(), 5000);
     this.refreshUsersList();
   }
@@ -21,14 +23,13 @@ class UsersList extends React.Component {
 
   refreshUsersList() {
     this.setState({isLoading: true});
-    fetch(process.env.NODE_ENV === 'production' ? 'https://now-chat-1.herokuapp.com/users' : 'http://localhost:3001/users')
-      .then(data => data.json())
+    this.api.getUsers()
       .then(data => this.setState({users: data, isLoading: false}));
   }
 
   render() {
     return (
-      <div onSubmit={this.props.handleSubmit}>
+      <div>
         {this.props.status === 'error' && <Alert variant="danger">Error ! Are you sure this ID exists ?</Alert>}
         {this.props.status === 'connected' && <Alert variant="success">You are connected to another user !</Alert>}
         {this.props.status === 'disconnected' && <Alert variant="info">You are disconnected. Select another user and start chatting !</Alert>}
@@ -47,10 +48,10 @@ class UsersList extends React.Component {
           {this.state.users.length === 0 && 'No user currently online'}
 
           {this.state.users.map((user, key) => {
-            if (user === this.props.username) { return <></>; } 
+            if (user.peerId === this.props.username) { return <Fragment key={user.peerId}></Fragment>; } 
             return (
-              <li key={key} className={user === this.props.targetId ? 'selected' : ''} onClick={() => this.props.onConnect(user)}>
-                {user}
+              <li key={user.peerId} className={user.peerId === this.props.targetId ? 'selected' : ''} onClick={() => this.props.onConnect(user)}>
+                {user.username} ({user.peerId})
               </li>
             );
           })}

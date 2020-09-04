@@ -4,6 +4,8 @@ import {Container, Row, Col, Navbar} from 'react-bootstrap';
 import ChatProxy from '../../models/chat-proxy';
 import MessageFormat from '../../models/message-format';
 import UsersList from '../users-list';
+import UsernameForm from '../username-form';
+import ApiProxy from '../../models/api-proxy';
 
 
 class App extends React.Component {
@@ -14,11 +16,10 @@ class App extends React.Component {
       username: 'anonymous',
       history: [],
     }
-    this.chatProxy = null;
-    this.msgFormat = null;
   }
 
   componentDidMount() {
+    this.api = new ApiProxy();
     this.chatProxy = new ChatProxy();
     this.msgFormat = new MessageFormat(this.chatProxy);
     this.chatProxy.onChangeUsername(username => this.setState({username}));
@@ -61,6 +62,10 @@ class App extends React.Component {
     this.updateScroll();
   }
 
+  handleUpdateUsername(username) {
+    this.api.updateUsername(username, this.chatProxy.username);
+  }
+
   render(){
     return (
       <>
@@ -75,6 +80,8 @@ class App extends React.Component {
           </Col>
 
           <Col md="3" className="sidebar-col">
+            <UsernameForm onSubmit={username => this.handleUpdateUsername(username)}/>
+
             <UsersList status={this.state.status} 
                        username={this.chatProxy ? this.chatProxy.username : ''}
                        targetId={this.chatProxy ? this.chatProxy.peerId : ''}
