@@ -8,7 +8,7 @@ class ChatProxy {
   constructor() {
     const id = Math.floor(Math.random()*10000);
     this.peer = new Peer(id, {
-      host: process.env.HOST || 'localhost',
+      host: process.env.NODE_ENV === 'production' ? 'now-chat-1.herokuapp.com' : 'localhost',
       port: 9000,
       path: '/chat',
     });
