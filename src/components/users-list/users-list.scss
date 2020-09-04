@@ -1,5 +1,13 @@
-li.selected {
-  font-weight: bold;
+li.user {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  .selected {
+    font-weight: bold;
+  }
 }
 
 .spinner-border {

@@ -50,7 +50,7 @@ class UsersList extends React.Component {
           {this.state.users.map((user, key) => {
             if (user.peerId === this.props.username) { return <Fragment key={user.peerId}></Fragment>; } 
             return (
-              <li key={user.peerId} className={user.peerId === this.props.targetId ? 'selected' : ''} onClick={() => this.props.onConnect(user)}>
+              <li key={user.peerId} className={(user.peerId === this.props.targetId ? 'selected ' : '') + 'user'} onClick={() => this.props.onConnect(user)}>
                 {user.username} ({user.peerId})
               </li>
             );
