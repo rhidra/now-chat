@@ -9,7 +9,7 @@ class ChatProxy {
     const id = Math.floor(Math.random()*10000);
     this.peer = new Peer(id, {
       host: process.env.NODE_ENV === 'production' ? 'now-chat-1.herokuapp.com' : 'localhost',
-      port: process.env.NODE_ENV === 'production' ? 80 : 3001,
+      port: process.env.NODE_ENV === 'production' ? undefined : 3001,
       path: '/peerjs',
     });
     this.username = 'anonymous';
