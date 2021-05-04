@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
 
-function ChatView(props) {
+function ChatView({users, history}) {
   function getName(peerId) {
-    const user = props.users.find(u => u.peerId === peerId);
-    return user ? user.username : ''+peerId;
+    const user = users.find(u => u.peerId === peerId);
+    return user ? user.username : `${peerId}`;
   }
 
   return (
     <ul className="chat-view" id="chat-view">
-      {props.history.map((msg, i) => {
+      {history.map((msg, i) => {
         let content;
         if (msg.type === 'message') {
           content = 

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { Form, FormGroup, FormControl, FormLabel, Button, InputGroup } from 'react-bootstrap';
 
 function UsernameForm({onSubmit}) {
   const [username, setUsername] = useState('');
@@ -10,21 +9,11 @@ function UsernameForm({onSubmit}) {
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <FormGroup>
-        <FormLabel>Your public username</FormLabel>
-
-        <InputGroup>
-          <FormControl type="text" value={username} onChange={e => setUsername(e.target.value)}/>
-
-          <InputGroup.Append>
-            <Button type="submit" variant="primary">
-              Choose
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </FormGroup>
-    </Form>
+    <form className="username-form" onSubmit={handleSubmit}>
+      <label for="username">Your public username</label>
+      <input name="username" value={username} onChange={e => setUsername(e.target.value)}/>
+      <button type="submit">Choose</button>
+    </form>
   );
 }
   

@@ -1,5 +1,4 @@
 import React, {Fragment} from 'react';
-import { FormGroup, FormControl, FormLabel, Button, Alert, Spinner } from 'react-bootstrap';
 
 class UsersList extends React.Component {
   constructor(props) {
@@ -27,18 +26,17 @@ class UsersList extends React.Component {
   render() {
     return (
       <div>
-        {this.props.status === 'error' && <Alert variant="danger">Error ! Are you sure this ID exists ?</Alert>}
-        {this.props.status === 'connected' && <Alert variant="success">You are connected to another user !</Alert>}
-        {this.props.status === 'disconnected' && <Alert variant="info">You are disconnected. Select another user and start chatting !</Alert>}
+        {this.props.status === 'error' && <div className="alert-error">Error ! Are you sure this ID exists ?</div>}
+        {this.props.status === 'connected' && <div className="alert-success">You are connected to another user !</div>}
+        {this.props.status === 'disconnected' && <div className="alert-info">You are disconnected. Select another user and start chatting !</div>}
 
-        <FormGroup>
-          <FormLabel>Your ID</FormLabel>
-          <FormControl type="text" disabled value={this.props.username}/>
-        </FormGroup>
+        <div className="your-id">Your ID: {this.props.username}</div>
 
-        <Button type="button" onClick={() => this.refreshUsersList()} disabled={this.state.isLoading}>Refresh user list</Button>
-        
-        <Spinner animation="border" className={this.state.isLoading ? '' : 'invisible'}></Spinner>
+        <button type="button" onClick={() => this.refreshUsersList()} disabled={this.state.isLoading}>
+          Refresh user list
+        </button>
+
+        {this.state.isLoading && <div className="loading">Loading...</div>}
 
         <h2>Users connected:</h2>
         <ul>
@@ -54,10 +52,10 @@ class UsersList extends React.Component {
           })}
         </ul>
 
-        {this.props.status === 'connected' && <Button type="button" onClick={() => this.props.onDisconnect()} variant="danger">Disconnect</Button>}
+        {this.props.status === 'connected' && <button type="button" onClick={() => this.props.onDisconnect()} className="danger">Disconnect</button>}
       </div>
     );
   }
 }
-  
+
 export default UsersList;

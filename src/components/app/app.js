@@ -1,6 +1,5 @@
 import React from 'react';
 import Chat from '../chat';
-import {Container, Row, Col, Navbar} from 'react-bootstrap';
 import ChatProxy from '../../models/chat-proxy';
 import MessageFormat from '../../models/message-format';
 import UsersList from '../users-list';
@@ -75,32 +74,29 @@ class App extends React.Component {
 
   render(){
     return (
-      <>
-      <Navbar bg="dark" expand="lg" variant="dark">
-        <Navbar.Brand href="#home">Now Chat !</Navbar.Brand>
-      </Navbar>
+      <div className="wrapper">
+        <header>
+          <a href="#home" className="brand-logo">Now Chat !</a>
+        </header>
 
-      <Container fluid className="app">
-        <Row className="h-100">
-          <Col md="9" className="chat-col">
-            <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)} users={this.state.users}/>
-          </Col>
+        <div className="app">
+          <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)} users={this.state.users}/>
 
-          <Col md="3" className="sidebar-col">
+          <div className="sidebar">
             <UsernameForm onSubmit={username => this.handleUpdateUsername(username)}/>
 
-            <UsersList status={this.state.status} 
-                       username={this.chatProxy ? this.chatProxy.username : ''}
-                       targetId={this.chatProxy ? this.chatProxy.peerId : ''}
-                       users={this.state.users}
-                       updateUsers={() => this.updateUsers()}
-                       onConnect={user => this.handleConnect(user)}
-                       onDisconnect={() => this.handleDisconnect()}
-                       />
-          </Col>
-        </Row>
-      </Container>
-      </>
+            <UsersList 
+              status={this.state.status} 
+              username={this.chatProxy ? this.chatProxy.username : ''}
+              targetId={this.chatProxy ? this.chatProxy.peerId : ''}
+              users={this.state.users}
+              updateUsers={() => this.updateUsers()}
+              onConnect={user => this.handleConnect(user)}
+              onDisconnect={() => this.handleDisconnect()}
+            />
+          </div>
+        </div>
+      </div>
     );
   }
 

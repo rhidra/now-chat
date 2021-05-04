@@ -1,6 +1,4 @@
 import React from 'react';
-import {FormControl, Button, InputGroup, Form} from 'react-bootstrap';
-import * as Icon from 'react-bootstrap-icons';
 
 class MessageForm extends React.Component {
   constructor(props) {
@@ -29,18 +27,19 @@ class MessageForm extends React.Component {
 
   render() {
     return (
-      <Form onSubmit={this.handleSubmit}>
-        <InputGroup>
-          <FormControl as="textarea" rows="1" value={this.state.value} onChange={this.handleChange} onKeyDown={this.handleKeyDown} 
-                      disabled={this.props.status !== 'connected'}/>
+      <form className="message-form" onSubmit={this.handleSubmit}>
+          <textarea 
+            rows="1" 
+            value={this.state.value} 
+            onChange={this.handleChange} 
+            onKeyDown={this.handleKeyDown} 
+            disabled={this.props.status !== 'connected'}
+          />
 
-          <InputGroup.Append>
-            <Button variant={this.props.status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={this.props.status !== 'connected'}>
-              Send <Icon.CheckCircleFill/>
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
+          <button className={this.props.status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={this.props.status !== 'connected'}>
+            Send
+          </button>
+      </form>
     );
   }
 }
