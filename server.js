@@ -43,6 +43,7 @@ app.post('/username', (req, res) => {
   }
 
   user.username = req.body.username;
+  return res.sendStatus(200);
 })
 
 

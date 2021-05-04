@@ -1,111 +1,102 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Chat from '../chat';
-import ChatProxy from '../../models/chat-proxy';
-import MessageFormat from '../../models/message-format';
 import UsersList from '../users-list';
 import UsernameForm from '../username-form';
-import ApiProxy from '../../models/api-proxy';
+import { setup } from '../../redux/api';
+import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
+import { updateUsername, updateUsersList } from '../../redux/user';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      status: 'disconnected',
-      username: 'anonymous',
-      history: [],
-      users: [],
-    }
-    this.api = new ApiProxy();
-  }
+function App() {
+  const status = useSelector(s => s.chat.status);
+  const history = useSelector(s => s.chat.history);
+  const users = useSelector(s => s.user.users);
+  const chatProxy = useSelector(s => s.api.chatProxy);
+  const msgFormat = useSelector(s => s.api.msgFormat);
+  const api = useSelector(s => s.api.backend);
+  const dispatch = useDispatch();
 
-  componentDidMount() {
-    this.chatProxy = new ChatProxy();
-    this.msgFormat = new MessageFormat(this.chatProxy);
-    this.chatProxy.onChangeUsername(username => this.setState({username}));
-    this.chatProxy.onConnected(() => 
-      this.setState({
-        status: 'connected',
-        history: this.state.history.concat([this.msgFormat.connection()]),
-      })
-    );
-    this.chatProxy.onDisconnected(() => 
-      this.setState({
-        status: 'disconnected', 
-        history: this.state.history.concat([this.msgFormat.disconnection()]),
-      })
-    );
-    this.chatProxy.onDataReceived(data => {
-      this.setState({history: this.state.history.concat([data])})
-      this.updateScroll();
-    });
-  }
-
-  // Connect the client to another client with its id
-  handleConnect(user) {
-    console.log('Trying to connect to', user.username, user.peerId);
-    this.setState({status: 'loading'});
-    this.chatProxy.connect(user.peerId)
-      .then(() => this.setState({status: 'connected'}))
-      .catch(() => this.setState({status: 'error'}));
-  }
-
-  handleDisconnect() {
-    this.setState({status: 'loading'});
-    this.chatProxy.disconnect();
-  }
-
-  handleSendData(data) {
-    data = this.msgFormat.formatMessage(data);
-    this.chatProxy.send(data);
-    this.setState({history: this.state.history.concat([data])});
-    this.updateScroll();
-  }
-
-  handleUpdateUsername(username) {
-    this.api.updateUsername(username, this.chatProxy.username);
-  }
-
-  async updateUsers() {
-    const users = await this.api.getUsers();
-    this.setState({users});
-    return users;
-  }
-
-  render(){
-    return (
-      <div className="wrapper">
-        <header>
-          <a href="#home" className="brand-logo">Now Chat !</a>
-        </header>
-
-        <div className="app">
-          <Chat status={this.state.status} history={this.state.history} onSendData={data => this.handleSendData(data)} users={this.state.users}/>
-
-          <div className="sidebar">
-            <UsernameForm onSubmit={username => this.handleUpdateUsername(username)}/>
-
-            <UsersList 
-              status={this.state.status} 
-              username={this.chatProxy ? this.chatProxy.username : ''}
-              targetId={this.chatProxy ? this.chatProxy.peerId : ''}
-              users={this.state.users}
-              updateUsers={() => this.updateUsers()}
-              onConnect={user => this.handleConnect(user)}
-              onDisconnect={() => this.handleDisconnect()}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  updateScroll() {
+  const updateScroll = useCallback(() => {
     setTimeout(() => {
       const element = document.getElementById('chat-view');
       element.scrollTop = element.scrollHeight;
     }, 100);
-  }
+  }, []);
+
+  useEffect(() => { dispatch(setup()); }, [dispatch])
+
+  useEffect(() => {
+    if (!chatProxy || !msgFormat) { return; }
+    
+    chatProxy.onChangeUsername(username => dispatch(updateUsername(username)));
+    chatProxy.onConnected(() => dispatch(connect(msgFormat.connection())));
+    chatProxy.onDisconnected(() => dispatch(disconnect(msgFormat.disconnection())));
+    chatProxy.onDataReceived(data => {
+      dispatch(addMessage(data));
+      updateScroll();
+    });
+  }, [chatProxy, msgFormat, dispatch]);
+
+  // Connect the client to another client with its id
+  const handleConnect = useCallback((user) => {
+    console.log('Trying to connect to', user.username, user.peerId);
+    dispatch(loading());
+    chatProxy.connect(user.peerId).catch(() => dispatch(error()));
+  }, [chatProxy, dispatch]);
+
+  const handleDisconnect = useCallback(() => {
+    dispatch(loading());
+    chatProxy.disconnect();
+  }, [chatProxy, dispatch]);
+
+  const handleSendData = useCallback((data) => {
+    const msg = msgFormat.formatMessage(data);
+    chatProxy.send(msg);
+    dispatch(addMessage(msg));
+    updateScroll();
+  }, [chatProxy, msgFormat, dispatch])
+
+  const updateUsers = useCallback(async () => {
+    if (api) {
+      const users = await api.getUsers();
+      dispatch(updateUsersList(users));
+      return users;
+    }
+  }, [api, dispatch]);
+
+  const handleUpdateUsername = useCallback(async (username) => {
+    if (api) {
+      await api.updateUsername(username, chatProxy.username);
+      updateUsers();
+    }
+  }, [api, chatProxy, updateUsers]);
+
+  return (
+    <div className="wrapper">
+      <header>
+        <a href="#home" className="brand-logo">Now Chat !</a>
+      </header>
+
+      <div className="app">
+        <Chat status={status} history={history} onSendData={data => handleSendData(data)} users={users}/>
+
+        <div className="sidebar">
+          <UsernameForm onSubmit={username => handleUpdateUsername(username)}/>
+
+          <UsersList 
+            status={status} 
+            username={chatProxy ? chatProxy.username : ''}
+            targetId={chatProxy ? chatProxy.peerId : ''}
+            users={users}
+            updateUsers={() => updateUsers()}
+            onConnect={user => handleConnect(user)}
+            onDisconnect={() => handleDisconnect()}
+          />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default App;
