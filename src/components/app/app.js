@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Chat from '../chat';
 import UsersList from '../users-list';
 import UsernameForm from '../username-form';
@@ -79,16 +79,13 @@ function App() {
       </header>
 
       <div className="app">
-        <Chat status={status} history={history} onSendData={data => handleSendData(data)} users={users}/>
+        <Chat onSendData={data => handleSendData(data)}/>
 
         <div className="sidebar">
           <UsernameForm onSubmit={username => handleUpdateUsername(username)}/>
 
           <UsersList 
-            status={status} 
-            username={chatProxy ? chatProxy.username : ''}
             targetId={chatProxy ? chatProxy.peerId : ''}
-            users={users}
             updateUsers={() => updateUsers()}
             onConnect={user => handleConnect(user)}
             onDisconnect={() => handleDisconnect()}

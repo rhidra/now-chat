@@ -1,6 +1,10 @@
 import React, { Fragment } from 'react';
+import { useSelector } from 'react-redux';
 
-function ChatView({users, history}) {
+function ChatView() {
+  const users = useSelector(s => s.user.users);
+  const history = useSelector(s => s.chat.history);
+
   function getName(peerId) {
     const user = users.find(u => u.peerId === peerId);
     return user ? user.username : `${peerId}`;

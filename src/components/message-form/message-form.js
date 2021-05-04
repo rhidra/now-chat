@@ -1,47 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-class MessageForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {value: ''};
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-  }
+function MessageForm({onSubmit}) {
+  const [value, setValue] = useState('');
+  const status = useSelector(s => s.chat.status);
 
-  handleChange(e) {
-    this.setState({value: e.target.value});
-  }
-
-  handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-    this.props.onSubmit(this.state.value);
-    this.setState({value: ''});
+    onSubmit(value);
+    setValue('');
   }
 
-  handleKeyDown(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      this.handleSubmit(e)
-    }
-  }
+  return (
+    <form className="message-form" onSubmit={handleSubmit}>
+        <textarea 
+          rows="1" 
+          value={value} 
+          onChange={e => setValue(e.target.value)} 
+          onKeyDown={e => (e.key === 'Enter' && !e.shiftKey) ? handleSubmit(e) : null} 
+          disabled={status !== 'connected'}
+        />
 
-  render() {
-    return (
-      <form className="message-form" onSubmit={this.handleSubmit}>
-          <textarea 
-            rows="1" 
-            value={this.state.value} 
-            onChange={this.handleChange} 
-            onKeyDown={this.handleKeyDown} 
-            disabled={this.props.status !== 'connected'}
-          />
-
-          <button className={this.props.status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={this.props.status !== 'connected'}>
-            Send
-          </button>
-      </form>
-    );
-  }
+        <button className={status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={status !== 'connected'}>
+          Send
+        </button>
+    </form>
+  );
 }
 
 export default MessageForm;
