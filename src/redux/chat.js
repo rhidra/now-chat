@@ -3,9 +3,12 @@ import ChatProxy from '../models/chat-proxy';
 import MessageFormat from '../models/message-format';
 
 // Connect to another user
-export const connect = createAsyncThunk('chat/connect', async (user, {getState}) => {
+export const connect = createAsyncThunk('chat/connect', async (user, {dispatch, getState}) => {
   console.log('Trying to connect to', user.username, user.peerId);
   const {chat: {chatProxy}} = getState();
+  if (chatProxy.peerId) {
+    dispatch(disconnect());
+  }
   await chatProxy.connect(user.peerId);
   return user;
 });
@@ -40,7 +43,9 @@ export const chatSlice = createSlice({
 
     receiveDisconnection: (state, action) => {
       state.status = 'disconnected';
-      state.history.push(MessageFormat.disconnection());
+      if (state.history[state.history.length - 1].type !== 'disconnection') {
+        state.history.push(MessageFormat.disconnection());
+      }
     },
 
     loading: state => {
@@ -69,11 +74,6 @@ export const chatSlice = createSlice({
     },
 
     [disconnect.pending]: state => { state.status = 'loading'; },
-    [disconnect.fulfilled]: (state) => {
-      // if (state.history[state.history.length - 1].type !== 'disconnection') {
-      //   state.history.push(MessageFormat.disconnection(state.chatProxy.username, state.chatProxy.peerId));
-      // }
-    },
   }
 })
 

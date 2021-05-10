@@ -45,6 +45,10 @@ class ChatProxy {
 
   async setConnection(conn, externalConnection=false) {
     console.log('Connected to', conn);
+    if (this.conn && this.conn.open) {
+      this.disconnectedCb();
+      this.disconnect();
+    }
     this.conn = conn;
     this.conn.on('data', data => {
       console.log('Data received:', data);
@@ -66,7 +70,6 @@ class ChatProxy {
     if (this.conn && this.conn.open) {
       this.conn.close();
     }
-
     if (external) {
       this.disconnectedCb();
     }

@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { refreshUsers } from '../../redux/user';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
+import { disconnect, connect } from '../../redux/chat';
 
-function UsersList({targetId, onConnect, onDisconnect}) {
+function UsersList() {
+  const dispatch = useDispatch();
   const status = useSelector(s => s.chat.status);
   const users = useSelector(s => s.user.users);
   const isLoading = useSelector(s => s.user.isLoading);
-  const userId = useSelector(s => s.chat.chatProxy?.username);
-  const dispatch = useDispatch();
+  const userId = useSelector(s => s.chat.chatProxy?.username ?? 'anonymous');
+  const targetId = useSelector(s => s.chat.chatProxy?.peerId);
 
   const connectedUsers = users.filter(u => u.peerId !== userId);
 
@@ -27,15 +29,16 @@ function UsersList({targetId, onConnect, onDisconnect}) {
           {connectedUsers.length === 0 && 'No user currently online'}
 
           {connectedUsers.map(user => (
-            <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => onConnect(user)}>
-              {user.username} ({user.peerId})
+            <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => dispatch(connect(user))}>
+              <span className="username">{user.username}</span>
+              <span className="id">{user.peerId}</span>
             </li>
           ))}
         </ul>
       </div>
 
       {status === 'connected' && 
-        <button type="button" onClick={() => onDisconnect()} className="danger">
+        <button type="button" onClick={() => dispatch(disconnect())} className="danger">
           Disconnect
         </button>
       }

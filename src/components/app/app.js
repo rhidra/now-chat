@@ -39,11 +39,7 @@ function App() {
         <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
           <UsernameForm/>
 
-          <UsersList 
-            targetId={chatProxy ? chatProxy.peerId : ''}
-            onConnect={user => dispatch(connect(user))}
-            onDisconnect={() => dispatch(disconnect())}
-          />
+          <UsersList/>
         </div>
       </div>
     </div>
