@@ -1,7 +1,13 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import ApiProxy from '../models/api-proxy';
 
-export const refreshUsers = createAsyncThunk('user/refreshUsers', async () => await ApiProxy.getUsers());
+export const refreshUsers = createAsyncThunk('user/refreshUsers', async (_, {dispatch, getState}) => {
+  const {chat: {chatProxy: {username: userId}}} = getState();
+  const users = await ApiProxy.getUsers()
+  const name = users.find(u => u.peerId === userId)?.username ?? 'anonymous';
+  dispatch(updateUsername(name));
+  return users;
+});
 
 export const changeUsername = createAsyncThunk('user/changeUsername', async (username, {dispatch, getState}) => {
   const {chat: {chatProxy}} = getState();
