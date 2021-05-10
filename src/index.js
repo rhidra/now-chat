@@ -4,13 +4,15 @@ import './index.scss';
 import App from './components/app';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux';
-import { configureStore, createStore } from '@reduxjs/toolkit';
 import store from './redux/store';
+import { ViewportProvider } from './providers/viewport';
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-    <App />
+      <ViewportProvider>
+        <App />
+      </ViewportProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
