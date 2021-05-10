@@ -2,60 +2,28 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Chat from '../chat';
 import UsersList from '../users-list';
 import UsernameForm from '../username-form';
-import { setup } from '../../redux/api';
-import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
+import { addMessage, connect, disconnect, receiveConnection, loading, sendData, receiveDisconnection } from '../../redux/chat';
 import { changeUsername } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import MessageFormat from '../../models/message-format';
 
 
 function App() {
   const isMobile = useIsMobile();
-  const chatProxy = useSelector(s => s.api.chatProxy);
-  const msgFormat = useSelector(s => s.api.msgFormat);
+  const chatProxy = useSelector(s => s.chat.chatProxy);
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const updateScroll = useCallback(() => {
-    setTimeout(() => {
-      const element = document.getElementById('chat-view');
-      element.scrollTop = element.scrollHeight;
-    }, 100);
-  }, []);
-
-  useEffect(() => { dispatch(setup()); }, [dispatch])
-
   useEffect(() => {
-    if (!chatProxy || !msgFormat) { return; }
+    if (!chatProxy) { return; }
     
-    chatProxy.onConnected(() => dispatch(connect(msgFormat.connection())));
-    chatProxy.onDisconnected(() => dispatch(disconnect(msgFormat.disconnection())));
-    chatProxy.onDataReceived(data => {
-      dispatch(addMessage(data));
-      updateScroll();
-    });
-  }, [chatProxy, msgFormat, dispatch, updateScroll]);
-
-  // Connect the client to another client with its id
-  const handleConnect = useCallback((user) => {
-    console.log('Trying to connect to', user.username, user.peerId);
-    dispatch(loading());
-    chatProxy.connect(user.peerId).catch(() => dispatch(error()));
+    chatProxy.onConnected(() => dispatch(receiveConnection()));
+    chatProxy.onDisconnected(() => dispatch(receiveDisconnection()));
+    chatProxy.onDataReceived(data => dispatch(addMessage(data)));
   }, [chatProxy, dispatch]);
-
-  const handleDisconnect = useCallback(() => {
-    dispatch(loading());
-    chatProxy.disconnect();
-  }, [chatProxy, dispatch]);
-
-  const handleSendData = useCallback((data) => {
-    const msg = msgFormat.formatMessage(data);
-    chatProxy.send(msg);
-    dispatch(addMessage(msg));
-    updateScroll();
-  }, [chatProxy, msgFormat, dispatch, updateScroll]);
 
   return (
     <div className="wrapper">
@@ -67,15 +35,15 @@ function App() {
       </header>
 
       <div className="app">
-        <Chat onSendData={data => handleSendData(data)}/>
+        <Chat onSendData={data => dispatch(sendData(data))}/>
         
         <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
           <UsernameForm onSubmit={username => dispatch(changeUsername(username))}/>
 
           <UsersList 
             targetId={chatProxy ? chatProxy.peerId : ''}
-            onConnect={user => handleConnect(user)}
-            onDisconnect={() => handleDisconnect()}
+            onConnect={user => dispatch(connect(user))}
+            onDisconnect={() => dispatch(disconnect())}
           />
         </div>
       </div>

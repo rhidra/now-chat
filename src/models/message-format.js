@@ -1,37 +1,32 @@
 import {v4 as uuidv4} from 'uuid';
 
 class MessageFormat {
-  constructor(username, peerId) {
-    this.username = username;
-    this.peerId = peerId;
-  }
-
-  formatMessage(msg) {
+  static formatMessage(from, to, msg) {
     return {
       id: uuidv4(),
       type: 'message',
-      from: this.username,
-      to: this.peerId,
+      from,
+      to,
       data: msg,
     };
   }
 
-  connection() {
+  static connection(from, to) {
     return {
       id: uuidv4(),
       type: 'connection',
-      from: this.username,
-      to: this.peerId,
+      from,
+      to,
       data: '',
     }
   }
 
-  disconnection() {
+  static disconnection(from, to) {
     return {
       id: uuidv4(),
       type: 'disconnection',
-      from: this.username,
-      to: this.peerId,
+      from,
+      to,
       data: '',
     }
   }

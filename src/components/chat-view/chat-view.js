@@ -1,9 +1,16 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 function ChatView() {
   const users = useSelector(s => s.user.users);
   const history = useSelector(s => s.chat.history);
+
+  useEffect(() => {
+    setTimeout(() => {
+      const element = document.getElementById('chat-view');
+      element.scrollTop = element.scrollHeight;
+    }, 100);
+  }, [history]);
 
   function getName(peerId) {
     const user = users.find(u => u.peerId === peerId);

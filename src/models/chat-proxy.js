@@ -17,7 +17,7 @@ class ChatProxy {
     this.disconnectedCb = () => {};
 
     this.peer.on('open', id => this.setUsername(id));
-    this.peer.on('connection', conn => this.setConnection(conn));
+    this.peer.on('connection', conn => this.setConnection(conn, true));
     this.peer.on('disconnected', () => this.disconnect());
     this.peer.on('close', () => this.disconnect());
     this.peer.on('error', err => {
@@ -30,12 +30,11 @@ class ChatProxy {
     console.log('Connecting to ', otherId, 'as', this.username);
     const conn = this.peer.connect(otherId);
 
-    return new Promise((resolve, reject) => {
-      conn.on('open', () => {
-        this.setConnection(conn);
+    return new Promise(resolve => {
+      conn.on('open', async () => {
+        await this.setConnection(conn);
         resolve();
-      })
-      this.errorCb = reject;
+      });
     });
   }
 
@@ -44,28 +43,33 @@ class ChatProxy {
     this.username = id;
   }
 
-  setConnection(conn) {
+  async setConnection(conn, externalConnection=false) {
     console.log('Connected to', conn);
     this.conn = conn;
     this.conn.on('data', data => {
-      console.log('Data received:', data)
-      this.dataReceivedCb(data)
+      console.log('Data received:', data);
+      this.dataReceivedCb(data);
     });
     this.conn.on('error', err => {
       console.error('PeerJS Connection Error:', err);
       this.errorCb(err);
     });
-    this.conn.on('close', () => this.disconnect());
+    this.conn.on('close', () => this.disconnect(true));
 
-    setTimeout(() => this.connectedCb(conn), 100);
+    if (externalConnection) {
+      setTimeout(() => this.connectedCb(conn), 100);
+    }
+    return new Promise(r => setTimeout(() => r(), 100));
   }
 
-  disconnect() {
+  async disconnect(external=false) {
     if (this.conn && this.conn.open) {
       this.conn.close();
     }
 
-    this.disconnectedCb();
+    if (external) {
+      this.disconnectedCb();
+    }
   }
 
   onConnected(fun) {

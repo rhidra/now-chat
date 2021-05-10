@@ -4,7 +4,7 @@ import ApiProxy from '../models/api-proxy';
 export const refreshUsers = createAsyncThunk('user/refreshUsers', async () => await ApiProxy.getUsers());
 
 export const changeUsername = createAsyncThunk('user/changeUsername', async (username, {dispatch, getState}) => {
-  const {api: {chatProxy}} = getState();
+  const {chat: {chatProxy}} = getState();
   await ApiProxy.updateUsername(username, chatProxy.username);
   dispatch(refreshUsers());
   return username;

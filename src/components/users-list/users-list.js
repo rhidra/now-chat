@@ -6,15 +6,15 @@ function UsersList({targetId, onConnect, onDisconnect}) {
   const status = useSelector(s => s.chat.status);
   const users = useSelector(s => s.user.users);
   const isLoading = useSelector(s => s.user.isLoading);
-  const userId = useSelector(s => s.api.chatProxy?.username);
+  const userId = useSelector(s => s.chat.chatProxy?.username);
   const dispatch = useDispatch();
 
   const connectedUsers = users.filter(u => u.peerId !== userId);
 
   useEffect(() => {
-    const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
+    // const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
     dispatch(refreshUsers());
-    return () => clearInterval(timerId);
+    // return () => clearInterval(timerId);
   }, [dispatch]);
 
   return (
