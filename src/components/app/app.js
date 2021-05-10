@@ -7,6 +7,8 @@ import { addMessage, connect, disconnect, error, loading } from '../../redux/cha
 import { updateUsername, updateUsersList } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 
 
 function App() {
@@ -76,7 +78,9 @@ function App() {
     <div className="wrapper">
       <header>
         <a href="#home" className="brand-logo">Now Chat !</a>
-        <button className="sidebar-button" onClick={() => setIsSidebarOpen(o => !o)}>Open</button>
+        <button className="sidebar-button" onClick={() => setIsSidebarOpen(o => !o)}>
+          <FontAwesomeIcon icon={faBars}/>
+        </button>
       </header>
 
       <div className="app">

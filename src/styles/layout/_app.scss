@@ -1,0 +1,35 @@
+$header-height: 56px;
+
+body {
+  background-color: $darker;
+  color: white;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  .app {
+    flex-grow: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chat {
+    box-sizing: border-box;
+    width: 70%;
+    padding: .5rem 1rem;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    @include mobile-lg {
+      width: 100%;
+    }
+
+    .chat-view {
+      flex-grow: 1;
+    }
+  }
+}

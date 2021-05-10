@@ -1,0 +1,19 @@
+.sidebar {
+  box-sizing: border-box;
+  background-color: $dark;
+  width: 30%;
+  padding: 0 1rem;
+  transition: right 200ms ease;
+  position: absolute;
+  height: 100%;
+  top: 0;
+
+  @include mobile-lg {
+    right: -100%;
+    width: 100%;
+  }
+
+  &.open {
+    right: 0;
+  }
+}

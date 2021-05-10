@@ -2,6 +2,10 @@
 
 @import 'mixins';
 @import 'variables';
-@import 'layout';
-@import 'alert';
-@import 'button';
+
+@import 'components/alert';
+@import 'components/button';
+
+@import 'layout/app';
+@import 'layout/header';
+@import 'layout/sidebar';
