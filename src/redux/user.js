@@ -1,16 +1,23 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import ApiProxy from '../models/api-proxy';
 
-export const refreshUsers = createAsyncThunk('user/refreshUsers', async () => {
-  const users = await ApiProxy.getUsers();
-  return users;
+export const refreshUsers = createAsyncThunk('user/refreshUsers', async () => await ApiProxy.getUsers());
+
+export const changeUsername = createAsyncThunk('user/changeUsername', async (username, {dispatch, getState}) => {
+  const {api: {chatProxy}} = getState();
+  await ApiProxy.updateUsername(username, chatProxy.username);
+  dispatch(refreshUsers());
+  return username;
 });
 
 export const userSlice = createSlice({
   name: 'user',
   
   initialState: {
+    // Display username
     username: 'anonymous',
+
+    // List of users
     users: [],
     isLoading: false,
     error: '',
@@ -23,9 +30,7 @@ export const userSlice = createSlice({
   },
 
   extraReducers: {
-    [refreshUsers.pending]: state => {
-      state.isLoading = true;
-    },
+    [refreshUsers.pending]: state => { state.isLoading = true; },
     [refreshUsers.fulfilled]: (state, {payload}) => {
       state.isLoading = false;
       state.users = payload;
@@ -34,6 +39,16 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = payload;
     },
+
+    [changeUsername.pending]: state => { state.isLoading = true; },
+    [changeUsername.fulfilled]: (state, {payload}) => {
+      state.isLoading = true;
+      state.username = payload;
+    },
+    [changeUsername.rejected]: (state, {payload}) => {
+      state.isLoading = true;
+      state.error = payload;
+    }
   }
 })
 

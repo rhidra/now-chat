@@ -4,7 +4,7 @@ import UsersList from '../users-list';
 import UsernameForm from '../username-form';
 import { setup } from '../../redux/api';
 import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
-import { refreshUsers, updateUsername } from '../../redux/user';
+import { changeUsername, refreshUsers, updateUsername } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -59,12 +59,6 @@ function App() {
     updateScroll();
   }, [chatProxy, msgFormat, dispatch, updateScroll]);
 
-
-  const handleUpdateUsername = useCallback(async (username) => {
-    await ApiProxy.updateUsername(username, chatProxy.username);
-    dispatch(refreshUsers());
-  }, [chatProxy, dispatch]);
-
   return (
     <div className="wrapper">
       <header>
@@ -78,7 +72,7 @@ function App() {
         <Chat onSendData={data => handleSendData(data)}/>
         
         <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
-          <UsernameForm onSubmit={username => handleUpdateUsername(username)}/>
+          <UsernameForm onSubmit={username => dispatch(changeUsername(username))}/>
 
           <UsersList 
             targetId={chatProxy ? chatProxy.peerId : ''}
