@@ -6,16 +6,17 @@ import { setup } from '../../redux/api';
 import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
 import { updateUsername, updateUsersList } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
+import { useIsMobile, useViewport } from '../../providers/viewport';
 
 
 function App() {
-  const status = useSelector(s => s.chat.status);
-  const history = useSelector(s => s.chat.history);
-  const users = useSelector(s => s.user.users);
   const chatProxy = useSelector(s => s.api.chatProxy);
   const msgFormat = useSelector(s => s.api.msgFormat);
   const api = useSelector(s => s.api.backend);
   const dispatch = useDispatch();
+
+  const isMobile = useIsMobile();
+  console.log(isMobile);
 
   const updateScroll = useCallback(() => {
     setTimeout(() => {
@@ -36,7 +37,7 @@ function App() {
       dispatch(addMessage(data));
       updateScroll();
     });
-  }, [chatProxy, msgFormat, dispatch]);
+  }, [chatProxy, msgFormat, dispatch, updateScroll]);
 
   // Connect the client to another client with its id
   const handleConnect = useCallback((user) => {
@@ -55,7 +56,7 @@ function App() {
     chatProxy.send(msg);
     dispatch(addMessage(msg));
     updateScroll();
-  }, [chatProxy, msgFormat, dispatch])
+  }, [chatProxy, msgFormat, dispatch, updateScroll]);
 
   const updateUsers = useCallback(async () => {
     if (api) {

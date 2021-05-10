@@ -8,18 +8,18 @@ function UsersList({targetId, updateUsers, onConnect, onDisconnect}) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    const timerId = setInterval(() => refreshUsersList(), 5000);
-    refreshUsersList();
-
-    return () => clearInterval(timerId);
-  }, []);
-
   const refreshUsersList = useCallback(async () => {
     setIsLoading(true);
     await updateUsers();
     setIsLoading(false);
   }, [updateUsers]);
+  
+  useEffect(() => {
+    const timerId = setInterval(() => refreshUsersList(), 5000);
+    refreshUsersList();
+
+    return () => clearInterval(timerId);
+  }, [refreshUsersList]);
 
   return (
     <div>
