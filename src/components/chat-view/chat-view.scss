@@ -11,6 +11,9 @@
   hyphens: auto;
 
   padding: .5rem 1rem;
+  display: flex;
+  justify-content: end;
+  flex-direction: column;
 
   li.connection {
     color: green;

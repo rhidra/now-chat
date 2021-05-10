@@ -1,12 +1,13 @@
 .alert {
   padding: 0.75rem 1.25rem;
-  transition: all ease-in-out 300ms;
-  height: 45px;
-  margin-top: -45px;
+  transition: all ease-in-out 500ms;
+  transform: translateY(-100%);
   box-sizing: border-box;
+  position: absolute;
+  width: 100%;
 
   &.display {
-    margin-top: 0;
+    transform: translateY(0);
   }
 }
 
