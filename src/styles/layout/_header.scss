@@ -1,18 +1,20 @@
 header {
-  background-color: #343a40;
+  background-color: white;
   display: flex;
   align-items: center;
   padding: 0.5rem 1rem;
   height: $header-height;
   box-sizing: border-box;
   justify-content: space-between;
+  box-shadow: $shadow-1;
+  z-index: 100;
 
   a.brand-logo {
+    color: black;
     padding-top: 0.3125rem;
     padding-bottom: 0.3125rem;
     margin-right: 1rem;
     font-size: 1.25rem;
-    color: white;
     text-decoration: none !important;
   }
 
@@ -28,13 +30,14 @@ header {
     justify-content: center;
     align-items: center;
     transition: all linear 100ms;
+    color: black;
 
     &:hover {
-      background-color: #2b333c;
+      background-color: hsl(0, 0%, 90%);
     }
 
     &:active {
-      background-color: #1a1e24;
+      background-color: hsl(0, 0%, 80%);
       transform: scale(1.05);
     }
 

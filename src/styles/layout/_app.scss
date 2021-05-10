@@ -1,8 +1,8 @@
 $header-height: 56px;
 
 body {
-  background-color: $darker;
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .wrapper {
@@ -17,6 +17,7 @@ body {
   }
 
   .chat {
+    background: hsl(180, 7%, 97%);
     box-sizing: border-box;
     width: 70%;
     padding: .5rem 1rem;
