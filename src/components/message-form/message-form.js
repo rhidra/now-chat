@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 
 function MessageForm({onSubmit}) {
   const [value, setValue] = useState('');
@@ -13,17 +15,20 @@ function MessageForm({onSubmit}) {
 
   return (
     <form className="message-form" onSubmit={handleSubmit}>
+      <div className="textarea-wrapper">
         <textarea 
           rows="1" 
-          value={value} 
+          value={value}
           onChange={e => setValue(e.target.value)} 
           onKeyDown={e => (e.key === 'Enter' && !e.shiftKey) ? handleSubmit(e) : null} 
           disabled={status !== 'connected'}
+          placeholder="Type something..."
         />
 
         <button className={status === 'connected' ? 'primary' : 'danger'} type="submit" disabled={status !== 'connected'}>
-          Send
+          <FontAwesomeIcon icon={faPaperPlane}/>
         </button>
+      </div>
     </form>
   );
 }

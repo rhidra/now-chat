@@ -6,7 +6,7 @@ header {
   height: $header-height;
   box-sizing: border-box;
   justify-content: space-between;
-  box-shadow: $shadow-1;
+  border-bottom: 1px solid rgba(0, 0, 0, .15);
   z-index: 100;
 
   a.brand-logo {
