@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Chat from '../chat';
 import UsersList from '../users-list';
 import UsernameForm from '../username-form';
@@ -6,17 +6,16 @@ import { setup } from '../../redux/api';
 import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
 import { updateUsername, updateUsersList } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { useIsMobile, useViewport } from '../../providers/viewport';
+import { useIsMobile } from '../../providers/viewport';
 
 
 function App() {
+  const isMobile = useIsMobile();
   const chatProxy = useSelector(s => s.api.chatProxy);
   const msgFormat = useSelector(s => s.api.msgFormat);
   const api = useSelector(s => s.api.backend);
   const dispatch = useDispatch();
-
-  const isMobile = useIsMobile();
-  console.log(isMobile);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const updateScroll = useCallback(() => {
     setTimeout(() => {
@@ -77,12 +76,13 @@ function App() {
     <div className="wrapper">
       <header>
         <a href="#home" className="brand-logo">Now Chat !</a>
+        <button className="sidebar-button" onClick={() => setIsSidebarOpen(o => !o)}>Open</button>
       </header>
 
       <div className="app">
         <Chat onSendData={data => handleSendData(data)}/>
-
-        <div className="sidebar">
+        
+        <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
           <UsernameForm onSubmit={username => handleUpdateUsername(username)}/>
 
           <UsersList 

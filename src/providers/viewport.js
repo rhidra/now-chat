@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { useDebounce } from "../utils/hooks";
 
 const viewportContext = React.createContext({});
 
@@ -21,7 +20,7 @@ export const ViewportProvider = ({ children }) => {
       }
       id = window.requestAnimationFrame(handleWindowResize);
     });
-    
+
     return () => {
       if (id) {
         window.cancelAnimationFrame(id);
@@ -44,5 +43,5 @@ export function useViewport(debounce = 1000) {
 
 export function useIsMobile(debounce = 1000) {
   const {width} = useViewport(debounce);
-  return width <= 481;
+  return width <= 641;
 }

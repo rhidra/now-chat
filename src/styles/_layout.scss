@@ -8,7 +8,7 @@ body {
 .wrapper {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
 
   header {
     background-color: #343a40;
@@ -17,6 +17,7 @@ body {
     padding: 0.5rem 1rem;
     height: $header-height;
     box-sizing: border-box;
+    justify-content: space-between;
 
     a.brand-logo {
       padding-top: 0.3125rem;
@@ -26,19 +27,32 @@ body {
       color: white;
       text-decoration: none !important;
     }
+
+    button.sidebar-button {
+      display: none;
+      @include mobile-lg {
+        display: inherit;
+      }
+    }
   }
 
   .app {
     flex-grow: 1;
-    display: flex;
+    position: relative;
+    overflow: hidden;
   }
 
   .chat {
     box-sizing: border-box;
-    width: 75%;
+    width: 70%;
     padding: .5rem 1rem;
     display: flex;
     flex-direction: column;
+    height: 100%;
+
+    @include mobile-lg {
+      width: 100%;
+    }
 
     .chat-view {
       flex-grow: 1;
@@ -48,7 +62,20 @@ body {
   .sidebar {
     box-sizing: border-box;
     background-color: $dark;
-    width: 25%;
+    width: 30%;
     padding: 0 1rem;
+    transition: right 200ms ease;
+    position: absolute;
+    height: 100%;
+    top: 0;
+
+    @include mobile-lg {
+      right: -100%;
+      width: 100%;
+    }
+
+    &.open {
+      right: 0;
+    }
   }
 }
