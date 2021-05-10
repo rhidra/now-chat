@@ -27,6 +27,10 @@
       border: none;
       font-size: 1rem;
       flex-grow: 1;
+
+      &:focus, &:focus-visible {
+        color: black;
+      }
     }
 
     span.user-id {

@@ -21,7 +21,7 @@ function UsersList({targetId, onConnect, onDisconnect}) {
 
   return (
     <div className="users-list">
-      <h2>Users connected:</h2>
+      <h2>Users connected</h2>
       <ul>
         {connectedUsers.length === 0 && 'No user currently online'}
 
