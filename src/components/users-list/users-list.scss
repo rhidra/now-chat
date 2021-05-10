@@ -1,8 +1,4 @@
-.users-list {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-
+.sidebar {
   h2 {
     margin: 1rem;
     margin-top: 1.5rem;
@@ -10,28 +6,33 @@
     color: rgba(0,0,0,.9);
   }
 
-  ul {
+  .list-wrapper {
     flex-grow: 1;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    overflow-y: auto;
     
-    li.user {
-      cursor: pointer;
-      padding: 1rem;
-      border-top: 1px solid rgba(0,0,0,.15);
-      transition: background linear 150ms;
+    ul {
+      overflow-y: auto;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      
+      li.user {
+        cursor: pointer;
+        padding: 1rem;
+        border-top: 1px solid rgba(0,0,0,.15);
+        transition: background linear 150ms;
 
-      &:last-child {
-        border-bottom: 1px solid rgba(0,0,0,.15);
-      }
+        &:last-child {
+          border-bottom: 1px solid rgba(0,0,0,.15);
+        }
 
-      &:hover {
-        background-color: rgba(0,0,0,.08);
-      }
+        &:hover {
+          background-color: rgba(0,0,0,.08);
+        }
 
-      .selected {
-        font-weight: bold;
+        .selected {
+          font-weight: bold;
+        }
       }
     }
   }

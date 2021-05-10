@@ -20,17 +20,19 @@ function UsersList({targetId, onConnect, onDisconnect}) {
   }, [dispatch]);
 
   return (
-    <div className="users-list">
+    <>
       <h2>Users connected</h2>
-      <ul>
-        {connectedUsers.length === 0 && 'No user currently online'}
+      <div className="list-wrapper">
+        <ul>
+          {connectedUsers.length === 0 && 'No user currently online'}
 
-        {connectedUsers.map(user => (
-          <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => onConnect(user)}>
-            {user.username} ({user.peerId})
-          </li>
-        ))}
-      </ul>
+          {connectedUsers.map(user => (
+            <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => onConnect(user)}>
+              {user.username} ({user.peerId})
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {status === 'connected' && 
         <button type="button" onClick={() => onDisconnect()} className="danger">
@@ -44,7 +46,7 @@ function UsersList({targetId, onConnect, onDisconnect}) {
         </button>
         <div className={`status-indicator ${isLoading ? 'loading' : ''}`}/>
       </footer>
-    </div>
+    </>
   );
 }
 
