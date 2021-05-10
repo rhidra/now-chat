@@ -38,7 +38,7 @@ function UsersList() {
       </div>
 
       {status === 'connected' && 
-        <button type="button" onClick={() => dispatch(disconnect())} className="danger">
+        <button type="button" onClick={() => dispatch(disconnect())} className="disconnect">
           Disconnect
         </button>
       }

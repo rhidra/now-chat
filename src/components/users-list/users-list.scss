@@ -42,6 +42,23 @@
     }
   }
 
+  button.disconnect {
+    background: transparent;
+    border: none;
+    color: #dc3545;
+    padding: 1rem;
+    transition: background linear 150ms;
+    border-radius: 0;
+
+    &:hover {
+      background-color: hsl(355, 51%, 90%);
+    }
+
+    &:active {
+      background-color: hsl(354, 37%, 77%);
+    }
+  }
+
   footer {
     padding: .2rem .5rem;
     border-top: 1px solid rgba(0, 0, 0, .15);

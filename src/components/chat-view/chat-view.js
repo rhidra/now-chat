@@ -33,7 +33,7 @@ function ChatView() {
         } else if (msg.type === 'connection') {
           content = <>Started a connection with <strong>{getName(msg.to)}</strong></>;
         } else if (msg.type === 'disconnection') {
-          content = <>Disconnection !</>;
+          content = <>Disconnection</>;
         } else {
           content = <>Unknown content type !</>;
         }
