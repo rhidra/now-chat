@@ -12,6 +12,11 @@
     padding: 0.5rem 1rem;
     position: relative;
     transition: all 100ms linear;
+    opacity: .4;
+
+    &.connected {
+      opacity: 1;
+    }
 
     &:focus-within {
       border-color:  hsl(210, 14%, 63%);
