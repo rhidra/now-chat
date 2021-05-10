@@ -1,13 +1,15 @@
-import React, {Fragment, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshUsers } from '../../redux/user';
 
 function UsersList({targetId, onConnect, onDisconnect}) {
   const status = useSelector(s => s.chat.status);
-  const username = useSelector(s => s.user.username);
   const users = useSelector(s => s.user.users);
   const isLoading = useSelector(s => s.user.isLoading);
+  const userId = useSelector(s => s.api.chatProxy?.username);
   const dispatch = useDispatch();
+
+  const connectedUsers = users.filter(u => u.peerId !== userId);
 
   useEffect(() => {
     const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
@@ -22,7 +24,7 @@ function UsersList({targetId, onConnect, onDisconnect}) {
       {status === 'disconnected' && <div className="alert-info">You are disconnected. Select another user and start chatting !</div>}
 
       <div className="your-id">
-        Your ID: {username}
+        Your ID: {userId}
       </div>
 
       <button type="button" onClick={() => dispatch(refreshUsers())} disabled={isLoading}>
@@ -37,16 +39,13 @@ function UsersList({targetId, onConnect, onDisconnect}) {
 
       <h2>Users connected:</h2>
       <ul>
-        {users.length === 0 && 'No user currently online'}
+        {connectedUsers.length === 0 && 'No user currently online'}
 
-        {users.map(user => {
-          if (user.peerId === username) { return <Fragment key={user.peerId}></Fragment>; } 
-          return (
-            <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => onConnect(user)}>
-              {user.username} ({user.peerId})
-            </li>
-          );
-        })}
+        {connectedUsers.map(user => (
+          <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => onConnect(user)}>
+            {user.username} ({user.peerId})
+          </li>
+        ))}
       </ul>
 
       {status === 'connected' && 

@@ -31,9 +31,7 @@ peerServer.on('disconnect', (id) => {
   }
 });
 
-app.get('/users', (req, res) => {
-  return res.json(users);
-});
+app.get('/users', (req, res) => res.json(users));
 
 app.post('/username', (req, res) => {
   const user = users.find(u => u.peerId === req.body.peerId);

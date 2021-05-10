@@ -4,12 +4,11 @@ import UsersList from '../users-list';
 import UsernameForm from '../username-form';
 import { setup } from '../../redux/api';
 import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
-import { changeUsername, refreshUsers, updateUsername } from '../../redux/user';
+import { changeUsername } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import ApiProxy from '../../models/api-proxy';
 
 
 function App() {
@@ -31,7 +30,6 @@ function App() {
   useEffect(() => {
     if (!chatProxy || !msgFormat) { return; }
     
-    chatProxy.onChangeUsername(username => dispatch(updateUsername(username)));
     chatProxy.onConnected(() => dispatch(connect(msgFormat.connection())));
     chatProxy.onDisconnected(() => dispatch(disconnect(msgFormat.disconnection())));
     chatProxy.onDataReceived(data => {

@@ -12,7 +12,6 @@ class ChatProxy {
     this.users = [];
     this.conn = null;
     this.dataReceivedCb = () => {};
-    this.changeUsernameCb = () => {};
     this.connectedCb = () => {};
     this.errorCb = () => {};
     this.disconnectedCb = () => {};
@@ -43,11 +42,6 @@ class ChatProxy {
   setUsername(id) {
     console.log('Set username', id);
     this.username = id;
-    this.changeUsernameCb(this.username);
-  }
-
-  onChangeUsername(fun) {
-    this.changeUsernameCb = fun;
   }
 
   setConnection(conn) {
