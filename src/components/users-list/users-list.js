@@ -18,11 +18,7 @@ function UsersList({targetId, onConnect, onDisconnect}) {
   }, [dispatch]);
 
   return (
-    <div>
-      <div className="your-id">
-        Your ID: {userId}
-      </div>
-
+    <div className="users-list">
       <button type="button" onClick={() => dispatch(refreshUsers())} disabled={isLoading}>
         Refresh user list
       </button>

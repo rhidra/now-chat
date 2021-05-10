@@ -1,17 +1,21 @@
-li.user {
-  cursor: pointer;
+.users-list {
+  padding: 1rem;
 
-  &:hover {
-    text-decoration: underline;
+  li.user {
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    .selected {
+      font-weight: bold;
+    }
   }
 
-  .selected {
-    font-weight: bold;
+  .spinner-border {
+    position: relative;
+    top: 10px;
+    left: 13px;
   }
-}
-
-.spinner-border {
-  position: relative;
-  top: 10px;
-  left: 13px;
 }

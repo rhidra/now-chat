@@ -17,10 +17,21 @@
     color: rgba(0,0,0,.5);
   }
 
-  input {
-    background: transparent;
-    outline: none;
-    border: none;
-    font-size: 1rem;
+  .input-wrapper {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+      background: transparent;
+      outline: none;
+      border: none;
+      font-size: 1rem;
+      flex-grow: 1;
+    }
+
+    span.user-id {
+      color: rgba(0,0,0,0.25);
+      font-size: 1rem;
+    }
   }
 }

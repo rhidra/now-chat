@@ -6,6 +6,7 @@ function UsernameForm() {
   const username = useSelector(s => s.user.username)
   const [value, setValue] = useState('');
   const dispatch = useDispatch();
+  const userId = useSelector(s => s.chat.chatProxy?.username);
 
   useEffect(() => setValue(username), [username]);
 
@@ -26,7 +27,10 @@ function UsernameForm() {
   return (
     <form className="username-form" onSubmit={handleSubmit} onClick={() => handleClick()}>
       <label for="username">Your are connected as</label>
-      <input id="username" name="username" value={value} onChange={e => setValue(e.target.value)} onBlur={handleSubmit}/>
+      <div className="input-wrapper">
+        <input id="username" name="username" value={value} onChange={e => setValue(e.target.value)} onBlur={handleSubmit}/>
+        <span className="user-id">{userId}</span>
+      </div>
     </form>
   );
 }
