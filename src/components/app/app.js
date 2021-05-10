@@ -37,7 +37,7 @@ function App() {
         <Chat onSendData={data => dispatch(sendData(data))}/>
         
         <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
-          <UsernameForm onSubmit={username => dispatch(changeUsername(username))}/>
+          <UsernameForm/>
 
           <UsersList 
             targetId={chatProxy ? chatProxy.peerId : ''}

@@ -13,7 +13,7 @@ function UsersList({targetId, onConnect, onDisconnect}) {
 
   useEffect(() => {
     const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
-    dispatch(refreshUsers());
+    setTimeout(() => dispatch(refreshUsers()), 1000);
     return () => clearInterval(timerId);
   }, [dispatch]);
 

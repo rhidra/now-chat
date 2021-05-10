@@ -1,18 +1,32 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { changeUsername } from '../../redux/user';
 
-function UsernameForm({onSubmit}) {
-  const [username, setUsername] = useState('');
+function UsernameForm() {
+  const username = useSelector(s => s.user.username)
+  const [value, setValue] = useState('');
+  const dispatch = useDispatch();
+
+  useEffect(() => setValue(username), [username]);
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(username);
+    const trimmed = value.trim();
+    if (!trimmed) {
+      setValue(username);
+    } else if (trimmed !== username) {
+      dispatch(changeUsername(trimmed));
+    }
+  }
+
+  function handleClick() {
+    document.getElementById('username').focus();
   }
 
   return (
-    <form className="username-form" onSubmit={handleSubmit}>
-      <label for="username">Your public username</label>
-      <input name="username" value={username} onChange={e => setUsername(e.target.value)}/>
-      <button type="submit">Choose</button>
+    <form className="username-form" onSubmit={handleSubmit} onClick={() => handleClick()}>
+      <label for="username">Your are connected as</label>
+      <input id="username" name="username" value={value} onChange={e => setValue(e.target.value)} onBlur={handleSubmit}/>
     </form>
   );
 }
