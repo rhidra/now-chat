@@ -1,6 +1,8 @@
 import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshUsers } from '../../redux/user';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSync } from '@fortawesome/free-solid-svg-icons';
 
 function UsersList({targetId, onConnect, onDisconnect}) {
   const status = useSelector(s => s.chat.status);
@@ -19,16 +21,6 @@ function UsersList({targetId, onConnect, onDisconnect}) {
 
   return (
     <div className="users-list">
-      <button type="button" onClick={() => dispatch(refreshUsers())} disabled={isLoading}>
-        Refresh user list
-      </button>
-
-      {isLoading && 
-        <div className="loading">
-          Loading...
-        </div>
-      }
-
       <h2>Users connected:</h2>
       <ul>
         {connectedUsers.length === 0 && 'No user currently online'}
@@ -45,6 +37,13 @@ function UsersList({targetId, onConnect, onDisconnect}) {
           Disconnect
         </button>
       }
+
+      <footer>
+        <button type="button" onClick={() => dispatch(refreshUsers())} disabled={isLoading}>
+          <FontAwesomeIcon icon={faSync}/>
+        </button>
+        <div className={`status-indicator ${isLoading ? 'loading' : ''}`}/>
+      </footer>
     </div>
   );
 }
