@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 function ChatView() {
   const users = useSelector(s => s.user.users);
   const history = useSelector(s => s.chat.history);
+  const userId = useSelector(s => s.chat.chatProxy.username);
 
   useEffect(() => {
     setTimeout(() => {
@@ -24,11 +25,13 @@ function ChatView() {
         if (msg.type === 'message') {
           content = 
             <>
-              <strong>{getName(msg.from)}: </strong>
-              {msg.data.split('\n').map((text, j) => <Fragment key={j}>{text}<br/></Fragment>)}
+              <div className="from">{getName(msg.from)}</div>
+              <div className="bubble">
+                {msg.data.split('\n').map((text, j) => <Fragment key={j}>{text}<br/></Fragment>)}
+              </div>
             </>;
         } else if (msg.type === 'connection') {
-          content = <>Started a connection with {getName(msg.to)}</>;
+          content = <>Started a connection with <strong>{getName(msg.to)}</strong></>;
         } else if (msg.type === 'disconnection') {
           content = <>Disconnection !</>;
         } else {
@@ -36,7 +39,7 @@ function ChatView() {
         }
 
         return (
-          <li key={msg.id} className={msg.type}>
+          <li key={msg.id} className={`${msg.type} ${msg.from === userId ? 'own' : ''}`}>
             {content}
           </li>
         );
