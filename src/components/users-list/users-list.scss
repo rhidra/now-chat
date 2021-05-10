@@ -10,6 +10,19 @@
     flex-grow: 1;
     overflow-y: auto;
 
+    .no-user {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      color: rgba(0,0,0,.5);
+
+      h3 {
+        margin-top: 2rem;
+      }
+    }
+
     ul {
       overflow-y: auto;
       list-style-type: none;

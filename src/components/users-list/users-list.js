@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshUsers } from '../../redux/user';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSync } from '@fortawesome/free-solid-svg-icons';
+import { faSync, faFrown } from '@fortawesome/free-solid-svg-icons';
 import { disconnect, connect } from '../../redux/chat';
 
 function UsersList() {
@@ -25,9 +25,14 @@ function UsersList() {
     <>
       <h2>Users connected</h2>
       <div className="list-wrapper">
-        <ul>
-          {connectedUsers.length === 0 && 'No user currently online'}
+        {connectedUsers.length === 0 && 
+          <div className="no-user">
+            <FontAwesomeIcon icon={faFrown} size="10x"/>
+            <h3>There is not user here...</h3>
+          </div>
+        }
 
+        <ul>
           {connectedUsers.map(user => (
             <li key={user.peerId} className={(user.peerId === targetId ? 'selected ' : '') + 'user'} onClick={() => dispatch(connect(user))}>
               <span className="username">{user.username}</span>
