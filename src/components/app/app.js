@@ -1,14 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Chat from '../chat';
 import UsersList from '../users-list';
 import UsernameForm from '../username-form';
-import { addMessage, connect, disconnect, receiveConnection, loading, sendData, receiveDisconnection } from '../../redux/chat';
+import { addMessage, connect, disconnect, receiveConnection, sendData, receiveDisconnection } from '../../redux/chat';
 import { changeUsername } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons'
-import MessageFormat from '../../models/message-format';
 
 
 function App() {
@@ -17,9 +16,9 @@ function App() {
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
+  // Setup various callbacks
   useEffect(() => {
     if (!chatProxy) { return; }
-    
     chatProxy.onConnected(() => dispatch(receiveConnection()));
     chatProxy.onDisconnected(() => dispatch(receiveDisconnection()));
     chatProxy.onDataReceived(data => dispatch(addMessage(data)));
