@@ -1,8 +1,13 @@
 .alert {
-  position: relative;
   padding: 0.75rem 1.25rem;
-  margin-bottom: 1rem;
-  border-radius: 0.25rem;
+  transition: all ease-in-out 300ms;
+  height: 45px;
+  margin-top: -45px;
+  box-sizing: border-box;
+
+  &.display {
+    margin-top: 0;
+  }
 }
 
 .alert-info {

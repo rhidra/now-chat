@@ -12,17 +12,13 @@ function UsersList({targetId, onConnect, onDisconnect}) {
   const connectedUsers = users.filter(u => u.peerId !== userId);
 
   useEffect(() => {
-    // const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
+    const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
     dispatch(refreshUsers());
-    // return () => clearInterval(timerId);
+    return () => clearInterval(timerId);
   }, [dispatch]);
 
   return (
     <div>
-      {status === 'error' && <div className="alert-error">Error ! Are you sure this ID exists ?</div>}
-      {status === 'connected' && <div className="alert-success">You are connected to another user !</div>}
-      {status === 'disconnected' && <div className="alert-info">You are disconnected. Select another user and start chatting !</div>}
-
       <div className="your-id">
         Your ID: {userId}
       </div>
