@@ -1,16 +1,17 @@
 import {v4 as uuidv4} from 'uuid';
 
 class MessageFormat {
-  constructor(chatProxy) {
-    this.chatProxy = chatProxy;
+  constructor(username, peerId) {
+    this.username = username;
+    this.peerId = peerId;
   }
 
   formatMessage(msg) {
     return {
       id: uuidv4(),
       type: 'message',
-      from: this.chatProxy.username,
-      to: this.chatProxy.peerId,
+      from: this.username,
+      to: this.peerId,
       data: msg,
     };
   }
@@ -19,8 +20,8 @@ class MessageFormat {
     return {
       id: uuidv4(),
       type: 'connection',
-      from: this.chatProxy.username,
-      to: this.chatProxy.peerId,
+      from: this.username,
+      to: this.peerId,
       data: '',
     }
   }
@@ -29,8 +30,8 @@ class MessageFormat {
     return {
       id: uuidv4(),
       type: 'disconnection',
-      from: this.chatProxy.username,
-      to: this.chatProxy.peerId,
+      from: this.username,
+      to: this.peerId,
       data: '',
     }
   }

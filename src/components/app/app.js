@@ -4,18 +4,18 @@ import UsersList from '../users-list';
 import UsernameForm from '../username-form';
 import { setup } from '../../redux/api';
 import { addMessage, connect, disconnect, error, loading } from '../../redux/chat';
-import { updateUsername, updateUsersList } from '../../redux/user';
+import { refreshUsers, updateUsername } from '../../redux/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import ApiProxy from '../../models/api-proxy';
 
 
 function App() {
   const isMobile = useIsMobile();
   const chatProxy = useSelector(s => s.api.chatProxy);
   const msgFormat = useSelector(s => s.api.msgFormat);
-  const api = useSelector(s => s.api.backend);
   const dispatch = useDispatch();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -59,20 +59,11 @@ function App() {
     updateScroll();
   }, [chatProxy, msgFormat, dispatch, updateScroll]);
 
-  const updateUsers = useCallback(async () => {
-    if (api) {
-      const users = await api.getUsers();
-      dispatch(updateUsersList(users));
-      return users;
-    }
-  }, [api, dispatch]);
 
   const handleUpdateUsername = useCallback(async (username) => {
-    if (api) {
-      await api.updateUsername(username, chatProxy.username);
-      updateUsers();
-    }
-  }, [api, chatProxy, updateUsers]);
+    await ApiProxy.updateUsername(username, chatProxy.username);
+    dispatch(refreshUsers());
+  }, [chatProxy, dispatch]);
 
   return (
     <div className="wrapper">
@@ -91,7 +82,6 @@ function App() {
 
           <UsersList 
             targetId={chatProxy ? chatProxy.peerId : ''}
-            updateUsers={() => updateUsers()}
             onConnect={user => handleConnect(user)}
             onDisconnect={() => handleDisconnect()}
           />

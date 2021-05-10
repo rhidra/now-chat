@@ -1,25 +1,19 @@
-import React, {Fragment, useCallback, useEffect, useState} from 'react';
-import { useSelector } from 'react-redux';
+import React, {Fragment, useEffect} from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshUsers } from '../../redux/user';
 
-function UsersList({targetId, updateUsers, onConnect, onDisconnect}) {
+function UsersList({targetId, onConnect, onDisconnect}) {
   const status = useSelector(s => s.chat.status);
   const username = useSelector(s => s.user.username);
   const users = useSelector(s => s.user.users);
+  const isLoading = useSelector(s => s.user.isLoading);
+  const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const refreshUsersList = useCallback(async () => {
-    setIsLoading(true);
-    await updateUsers();
-    setIsLoading(false);
-  }, [updateUsers]);
-  
   useEffect(() => {
-    const timerId = setInterval(() => refreshUsersList(), 5000);
-    refreshUsersList();
-
+    const timerId = setInterval(() => dispatch(refreshUsers()), 5000);
+    dispatch(refreshUsers());
     return () => clearInterval(timerId);
-  }, [refreshUsersList]);
+  }, [dispatch]);
 
   return (
     <div>
@@ -31,7 +25,7 @@ function UsersList({targetId, updateUsers, onConnect, onDisconnect}) {
         Your ID: {username}
       </div>
 
-      <button type="button" onClick={() => refreshUsersList()} disabled={isLoading}>
+      <button type="button" onClick={() => dispatch(refreshUsers())} disabled={isLoading}>
         Refresh user list
       </button>
 
