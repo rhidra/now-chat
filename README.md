@@ -1,7 +1,8 @@
 Now chat
 ========
 
-A small chat web app built with React, Bootstrap, Socket.io and PeerJS.
+A small P2P chat web app built with React, SASS, Socket.io and PeerJS.
+It uses WebRTC to implement a small lightweight chat system.
 It includes a front end app and a NodeJS/Express server for signaling users.
 
 A live demo hosted on Heroku: [https://now-chat-1.herokuapp.com/](https://now-chat-1.herokuapp.com/)
