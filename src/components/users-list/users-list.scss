@@ -70,6 +70,10 @@
     &:active {
       background-color: hsl(354, 37%, 77%);
     }
+
+    @include mobile {
+      margin-bottom: 50px;
+    }
   }
 
   footer {
@@ -78,6 +82,13 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    @include mobile {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
 
     .status-indicator {
       border-radius: 10px;
