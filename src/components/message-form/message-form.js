@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { sendData } from '../../redux/chat';
 
-function MessageForm({onSubmit}) {
+function MessageForm() {
   const [value, setValue] = useState('');
   const status = useSelector(s => s.chat.status);
+  const dispatch = useDispatch();
 
   const isConnected = status === 'connected';
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmit(value);
+    dispatch(sendData(value));
     setValue('');
   }
 

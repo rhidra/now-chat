@@ -8,13 +8,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsMobile } from '../../providers/viewport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons'
+import { setSidebarOpen } from '../../redux/theme';
 
 
 function App() {
   const isMobile = useIsMobile();
   const chatProxy = useSelector(s => s.chat.chatProxy);
+  const isSidebarOpen = useSelector(s => s.theme.isSidebarOpen);
   const dispatch = useDispatch();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   // Setup various callbacks
   useEffect(() => {
@@ -28,13 +29,13 @@ function App() {
     <div className="wrapper">
       <header>
         <a href="#home" className="brand-logo">Now Chat !</a>
-        <button className="sidebar-button" onClick={() => setIsSidebarOpen(o => !o)}>
+        <button className="sidebar-button" onClick={() => dispatch(setSidebarOpen(!isSidebarOpen))}>
           <FontAwesomeIcon icon={faBars}/>
         </button>
       </header>
 
       <div className="app">
-        <Chat onSendData={data => dispatch(sendData(data))}/>
+        <Chat/>
         
         <div className={`sidebar ${!isMobile || isSidebarOpen ? 'open' : ''}`}>
           <UsernameForm/>

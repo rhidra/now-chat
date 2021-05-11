@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import ChatProxy from '../models/chat-proxy';
 import MessageFormat from '../models/message-format';
+import { setSidebarOpen } from './theme';
 
 // Connect to another user
 export const connect = createAsyncThunk('chat/connect', async (user, {dispatch, getState}) => {
@@ -9,6 +10,7 @@ export const connect = createAsyncThunk('chat/connect', async (user, {dispatch, 
   if (chatProxy.peerId) {
     dispatch(disconnect());
   }
+  dispatch(setSidebarOpen(false));
   await chatProxy.connect(user.peerId);
   return user;
 });

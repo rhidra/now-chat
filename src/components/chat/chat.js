@@ -3,7 +3,7 @@ import MessageForm from '../message-form';
 import ChatView from '../chat-view';
 import { useSelector } from 'react-redux';
 
-function Chat({onSendData}) {
+function Chat() {
   const status = useSelector(s => s.chat.status);
   const [displayStatus, setDisplayStatus] = useState(true);
 
@@ -23,7 +23,7 @@ function Chat({onSendData}) {
       {status === 'disconnected' && <div className={`alert-info ${displayStatus ? 'display' : ''}`}>You are disconnected. Select another user and start chatting !</div>}
 
       <ChatView/>
-      <MessageForm onSubmit={data => onSendData(data)}/>
+      <MessageForm/>
     </div>
   );
 }
