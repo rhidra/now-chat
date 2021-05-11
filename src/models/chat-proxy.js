@@ -61,7 +61,8 @@ class ChatProxy {
     this.conn.on('close', () => this.disconnect(true));
 
     if (externalConnection) {
-      setTimeout(() => this.connectedCb(conn), 100);
+      console.log(this.conn.peerId);
+      setTimeout(() => this.connectedCb(conn), 5000);
     }
     return new Promise(r => setTimeout(() => r(), 100));
   }
